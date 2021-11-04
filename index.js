@@ -75,9 +75,7 @@ const stores = [
 
 //create cart item====================================
 const cartitem = {
-  items: [
-
-  ]
+  items: []
 }
 
 const total = document.querySelector('.total-number');
@@ -88,7 +86,6 @@ const updateTotal = () => {
     total.innerText = "£" + 0;
   }else{
     const totalArr = cartItemArr.map(item => (item.price * item.quantity));
-    console.log(totalArr);
     const sum = totalArr.reduce((curr, acc) => {
       return (curr + acc)
     })
@@ -103,27 +100,27 @@ const removeItemFromCart = (eachObj) => {
   const quantity = document.querySelectorAll('.quantity-text');
 
   removeItem.forEach(btn => {
-      btn.addEventListener('click', e => {
-          if(e.target.parentNode.attributes[0].value === eachObj.name){
-            if(eachObj.quantity > 1){
-              eachObj.quantity -=1
+    btn.addEventListener('click', e => {
+      if(e.target.parentNode.attributes[0].value === eachObj.name){
+        if(eachObj.quantity > 1){
+          eachObj.quantity -=1
 
-              quantity.forEach(qty => {
-                if(qty.id === eachObj.name){
-                  qty.innerText = eachObj.quantity;
-                }
-              })
-              updateTotal();
+          quantity.forEach(qty => {
+            if(qty.id === eachObj.name){
+              qty.innerText = eachObj.quantity;
             }
-            else if(eachObj.quantity <= 1){
-              const idx = cartitem.items.indexOf(eachObj);
-              cartitem.items.splice(idx,1);
-              console.log(cartitem.items);
-              e.target.parentNode.remove();
-              updateTotal();
-            }
-          }
-      })  
+          })
+          updateTotal();
+        }
+        else if(eachObj.quantity <= 1){
+          const idx = cartitem.items.indexOf(eachObj);
+          cartitem.items.splice(idx,1);
+          console.log(cartitem.items);
+          e.target.parentNode.remove();
+          updateTotal();
+        }
+      }
+    })  
   })
 }
 
@@ -134,18 +131,18 @@ const addItemToCart = (eachObj) => {
   const quantity = document.querySelectorAll('.quantity-text');
   
   addItem.forEach(btn => {
-      btn.addEventListener('click', e => {
-          if(e.target.parentNode.attributes[0].value === eachObj.name){
-            eachObj.quantity +=1
+    btn.addEventListener('click', e => {
+      if(e.target.parentNode.attributes[0].value === eachObj.name){
+        eachObj.quantity +=1
             
-            quantity.forEach(qty => {
-              if(qty.id === eachObj.name){
-                qty.innerText = Number(qty.innerText) + 1;
-                updateTotal();
-              }
-            })
-        }
-      })
+        quantity.forEach(qty => {
+          if(qty.id === eachObj.name){
+            qty.innerText = Number(qty.innerText) + 1;
+            updateTotal();
+          }
+        })
+      }
+    })
   })
 }  
 
@@ -163,9 +160,8 @@ const displayCart = (eachObj) => {
     <span class="quantity-text center" id=${eachObj.name}>${eachObj.quantity}</span>
     <button class="quantity-btn add-btn center">+</button>
     `;
-    li.setAttribute('listId', `${eachObj.name}`)
+  li.setAttribute('listId', `${eachObj.name}`)
 
-  
   updateTotal();
   addItemToCart(eachObj);
   removeItemFromCart(eachObj);
@@ -176,21 +172,21 @@ const cart = (arr) => {
   const addBtns = document.querySelectorAll('.add-button');
   addBtns.forEach(btn => {
     btn.addEventListener('click', e => {
-        if(e.target.id  === arr.name && !cartitem.items.includes(arr)){
-          cartitem.items.push(arr);
-          displayCart(arr);
-        }
-        // check if there is an item in cart already=> Don't add it to card, just add quantity
-        else if(e.target.id  === arr.name && cartitem.items.includes(arr)){
-          arr.quantity += 1
-          const quantity = document.querySelectorAll('.quantity-text');
-          quantity.forEach(qty => {
-            if(qty.id === arr.name){
-              qty.innerText = Number(qty.innerText) + 1;
-              updateTotal();
-            }
-          })
-        }
+      if(e.target.id  === arr.name && !cartitem.items.includes(arr)){
+        cartitem.items.push(arr);
+        displayCart(arr);
+      }
+      // check if there is an item in cart already=> Don't add it to card, just add quantity
+      else if(e.target.id  === arr.name && cartitem.items.includes(arr)){
+        arr.quantity += 1
+        const quantity = document.querySelectorAll('.quantity-text');
+        quantity.forEach(qty => {
+          if(qty.id === arr.name){
+            qty.innerText = Number(qty.innerText) + 1;
+            updateTotal();
+          }
+        })
+      }
     })
   })
 }
